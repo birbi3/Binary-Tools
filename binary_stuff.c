@@ -6,30 +6,37 @@
 
 int main(int argc, char **argv[]){
 	FILE *fp;
+	long file_len;
+	char ** binary_file;
+	char **file_buff;
 
-	char **binary_file = malloc(strlen(argv[1])+1);
+	binary_file = malloc(strlen(argv[1])+1);
 	if(binary_file == NULL){
 		printf("Error allocating memory\n");
 		exit(0);
 	}
 
 	strcpy(binary_file, argv[1]);
-	fp = fopen(binary_file, "w+");
+	fp = fopen(binary_file, "rb");
 
 	free(binary_file);
 
-	int file_buff_size = lseek(fp, 0, SEEK_END);
-	lseek(fp, 0, SEEK_SET);
-	char **file_buff = malloc(file_buff_size+1);
+	fseek(fp, 0, SEEK_END);
+	file_len = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	file_buff = malloc(file_len);
 	if (file_buff == NULL){
 		printf("Error allocating memory for file info"); 
 		exit(0);
 	}
-	fread(file_buff, sizeof(file_buff), 1, fp);
+
+	fread(file_buff, 1, file_len, fp);
+	fclose(fp);
+
 	printf("%s\n", file_buff);
 
 	free(file_buff);
 
-
+	return 0;
 
 }
