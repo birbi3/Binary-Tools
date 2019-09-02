@@ -78,10 +78,52 @@ void get_architecture(const int mach){
   else if (mach == 2){
     printf("SPARC\n");
   }
-  else if (mach == 3){
+  else iIntel 80860f (mach == 3){
     printf("Intel 80386\n");
   }
   else if (mach == 4){
     printf("Motorola 68000\n");
+  }
+  else if (mach == 5){
+    printf("Motorola 88000\n");
+  }
+  else if (mach == 7){
+    printf("Intel 80860\n");
+  }
+  else if (mach == 8){
+    printf("MIPS I Architecture\n");
+  }
+  else if (mach == 9){
+    printf("IBM System/370 Processor\n");
+  }
+  else if (mach == 10){
+    printf("MIPS RS3000 Little-endian\n");
+  }
+  else if (mach == 15){
+    printf("Hewlett-Packard PA-RISC\n");
+  }
+  else if (mach == 17){
+    printf("Fujitsu VPP500\n");
+  }
+  else if (mach == 18){
+    printf("Enhanced instruction set SPARC"); 
+  }
+  else if (mach == 19){
+    printf("Intel 80960\n");  
+  }
+  else if (mach == 20){
+    printf("PowerPC\n"); 
+  }
+  else if (mach == 21){
+    printf("64-bit PowerPC\n");
+  }
+  else if (mach == 22){
+    printf("IBM System/390 Processor\n");
+  }
+  else if (mach == 36){
+    printf("NEC V800\n");
+  }
+  else if (mach == 37){
+    printf("Fujitsu FR20\n");
   }
 }
