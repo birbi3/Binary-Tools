@@ -68,3 +68,20 @@ void get_type(const int type){
     }
 }
 
+void get_architecture(const int mach){
+  if(mach == 0){
+    printf("No machine\n");
+  }
+  else if(mach == 1){
+    printf("AT&T WE 32100\n");
+  }
+  else if (mach == 2){
+    printf("SPARC\n");
+  }
+  else if (mach == 3){
+    printf("Intel 80386\n");
+  }
+  else if (mach == 4){
+    printf("Motorola 68000\n");
+  }
+}
