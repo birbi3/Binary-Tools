@@ -23,6 +23,9 @@ int main(int argc, char **argv[]){
 
 void get_header_info(const char* elfFile) {
   Elf64_Ehdr header;
+  Elf64_Shdr sec_header;
+  char* sec_name;
+  int sec_index;
 
   FILE* file = fopen(elfFile, "rb");
   if(file) {
@@ -34,6 +37,25 @@ void get_header_info(const char* elfFile) {
       printf("Entry point: %ld\n", header.e_entry);
       printf("Architecture: ");
       get_architecture(header.e_machine);
+
+      fseek(file, header.e_shoff + header.e_shstrndx * sizeof(sec_header), SEEK_SET);
+      fread(&sec_header, 1, sizeof(sec_header), file);
+
+      sec_name = malloc(sec_header.sh_size);
+      fseek(file, sec_header.sh_offset, SEEK_SET);
+      fread(sec_name, 1, sec_header.sh_size, file);
+
+      for (sec_index = 0; sec_index < header.e_shnum; sec_index++){
+        const char* name = "";
+        fseek(file, header.e_shoff + sec_index * sizeof(sec_header), SEEK_SET);
+        fread(&sec_header, 1, sizeof(sec_header), file);
+
+        if (sec_header.sh_name){
+          name = sec_name + sec_header.sh_name;
+        }
+        printf("%2u %s\n", sec_index, name);
+      }
+
      }
     else{
       printf("This is not an ELF Binary\n");
