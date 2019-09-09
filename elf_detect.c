@@ -26,12 +26,17 @@ void get_header_info(const char* elfFile) {
   Elf64_Shdr sec_header;
   char* sec_name;
   int sec_index;
+  char **text_beg = ".text";
+  char **text_end = ".rodata"
+  long text_beg_off;
+  long text_end_off; 
 
   FILE* file = fopen(elfFile, "rb");
   if(file) {
     fread(&header, 1, sizeof(header), file);
 
     if (memcmp(header.e_ident, ELFMAG, SELFMAG) == 0) {
+      /*dumps ELF header info */
       printf("%s\n", header.e_ident);
       get_type(header.e_type);
       printf("Entry point: %ld\n", header.e_entry);
@@ -45,6 +50,7 @@ void get_header_info(const char* elfFile) {
       fseek(file, sec_header.sh_offset, SEEK_SET);
       fread(sec_name, 1, sec_header.sh_size, file);
 
+      /*Dumps all section header info */
       for (sec_index = 0; sec_index < header.e_shnum; sec_index++){
         const char* name = "";
         fseek(file, header.e_shoff + sec_index * sizeof(sec_header), SEEK_SET);
@@ -53,7 +59,14 @@ void get_header_info(const char* elfFile) {
         if (sec_header.sh_name){
           name = sec_name + sec_header.sh_name;
         }
-        printf("%2u %s\n", sec_index, name);
+        /*grabs offset of .text and .rodata */
+        if (strcmp(name,text_beg) == 0){
+          text_beg_off = sec_header.sh_offset;
+        }
+        else if (strcmp(name, text_end) == 0){
+          text_end_off = sec_header.sh_offset;
+        }
+        printf("%2u %s %ld\n", sec_index, name, sec_header.sh_offset);
       }
 
      }
