@@ -27,7 +27,7 @@ void get_header_info(const char* elfFile) {
   char* sec_name;
   int sec_index;
   char **text_beg = ".text";
-  char **text_end = ".rodata"
+  char **text_end = ".rodata";
   long text_beg_off;
   long text_end_off; 
 
@@ -67,8 +67,9 @@ void get_header_info(const char* elfFile) {
           text_end_off = sec_header.sh_offset;
         }
         printf("%2u %s %ld\n", sec_index, name, sec_header.sh_offset);
+        
       }
-
+      printf("%ld %ld\n", text_beg_off, text_end_off);
      }
     else{
       printf("This is not an ELF Binary\n");
