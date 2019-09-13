@@ -26,6 +26,7 @@ void get_header_info(const char* elfFile) {
   Elf64_Shdr sec_header;
   char* sec_name;
   int sec_index;
+  long text_index;
   char **text_beg = ".text";
   char **text_end = ".rodata";
   long text_beg_off;
@@ -69,7 +70,12 @@ void get_header_info(const char* elfFile) {
         printf("%2u %s %ld\n", sec_index, name, sec_header.sh_offset);
         
       }
-      printf("%ld %ld\n", text_beg_off, text_end_off);
+        /* design a structure that can store the data of each .text line. Will have to go 
+      do more research on how that data is structured */
+      fseek(file, text_beg_off , SEEK_SET);
+      for(text_index = text_beg_off; sec_index < text_end_off; sec_index++){
+        fseek(file, text_index, SEEK_SET);
+        fread()
      }
     else{
       printf("This is not an ELF Binary\n");
