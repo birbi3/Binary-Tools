@@ -31,6 +31,7 @@ void get_header_info(const char* elfFile) {
   char **text_end = ".rodata";
   long text_beg_off;
   long text_end_off; 
+  long current_line;
 
   FILE* file = fopen(elfFile, "rb");
   if(file) {
@@ -63,20 +64,23 @@ void get_header_info(const char* elfFile) {
         /*grabs offset of .text and .rodata */
         if (strcmp(name,text_beg) == 0){
           text_beg_off = sec_header.sh_offset;
+          text_end_off = sec_header.sh_offset + sec_header.sh_offset + sec_header.sh_size;
         }
-        else if (strcmp(name, text_end) == 0){
-          text_end_off = sec_header.sh_offset;
-        }
+
         printf("%2u %s %ld\n", sec_index, name, sec_header.sh_offset);
         
       }
-        /* design a structure that can store the data of each .text line. Will have to go 
-      do more research on how that data is structured */
+        /* find a way to parse this data */
       fseek(file, text_beg_off , SEEK_SET);
-      for(text_index = text_beg_off; sec_index < text_end_off; sec_index++){
+      for(text_index = text_beg_off; text_index < text_end_off; text_index++){
         fseek(file, text_index, SEEK_SET);
-        fread()
+        fread(&sec_header, 1, sizeof(sec_header), file);
+        printf("%d %d %ld %ld %ld %ld %d %d %ld %ld\n", sec_header.sh_name, sec_header.sh_type, sec_header.sh_flags, 
+          sec_header.sh_addr, sec_header.sh_offset, sec_header.sh_size, sec_header.sh_link,
+          sec_header.sh_info, sec_header.sh_addralign, sec_header.sh_entsize);
+
      }
+    }
     else{
       printf("This is not an ELF Binary\n");
       exit(0);
